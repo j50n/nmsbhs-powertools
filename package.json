@@ -1,0 +1,26 @@
+{
+    "name": "nmsbhs-powertools",
+    "version": "0.0.0",
+    "description": "",
+    "scripts": {
+        "build": "tsc",
+        "watch": "tsc --watch"
+    },
+    "author": "Jason Smith",
+    "license": "ISC",
+    "dependencies": {
+        "@types/node": "~12.7",
+        "csv-parse": "~4.4",
+        "immutable": "4.0.0-rc.12",
+        "nmsbhs-utils": "git+ssh://git@github.com/j50n/nmsbhs-utils.git#1.0.2"
+    },
+    "devDependencies": {
+        "typescript": "~3.6"
+    },
+    "prettier": {
+        "trailingComma": "all",
+        "tabWidth": 4,
+        "semi": true,
+        "printWidth": 160
+    }
+}
