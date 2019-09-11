@@ -2,7 +2,11 @@
     "name": "nmsbhs-powertools",
     "version": "0.0.0",
     "description": "",
+    "bin": {
+        "bhs": "./dist/bhs.js"
+    },
     "scripts": {
+        "install": "tsc",
         "build": "tsc",
         "watch": "tsc --watch"
     },
@@ -10,12 +14,17 @@
     "license": "ISC",
     "dependencies": {
         "@types/node": "~12.7",
+        "axios": "0.19.0",
         "csv-parse": "~4.4",
         "immutable": "4.0.0-rc.12",
         "nmsbhs-utils": "git+ssh://git@github.com/j50n/nmsbhs-utils.git#1.0.2"
     },
     "devDependencies": {
         "typescript": "~3.6"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/j50n/nmsbhs-powertools.git"
     },
     "prettier": {
         "trailingComma": "all",
