@@ -53,3 +53,7 @@ export function parseGalaxy(value: string): Galaxy {
         return matches[0];
     }
 }
+
+export interface IArgData {
+    data: string | undefined;
+}

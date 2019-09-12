@@ -65,3 +65,11 @@ export async function* read(r: Readable): AsyncIterableIterator<string> {
 
     yield* buffersToStrings(convertReadableToBuffers(r));
 }
+
+export async function toArray<T>(items: AsyncIterableIterator<T>): Promise<T[]>{
+    const results: T[] = [];
+    for await(const item of items){
+        results.push(item);
+    }
+    return results;
+}

@@ -1,9 +1,12 @@
-#!/usr/bin/env node
+#! /usr/bin/env node
 
-import { IArgGalaxy, IArgPlatform, parseGalaxy, checkPlatformValid, IArgUsername } from "./options";
+import { IArgGalaxy, IArgPlatform, parseGalaxy, IArgData, IArgUsername } from "./options";
 import * as Downloads from "./downloads";
+import * as Search from "./search";
+import { inspect } from "util";
 
 import program from "commander";
+import { coordinates } from "nmsbhs-utils";
 
 program.description("Power-tools for travelers in No Man's Sky.").version("0.0.0");
 
@@ -28,6 +31,15 @@ program
         await errorTrap(async () => await Downloads.bases(args));
     });
 
+program
+    .command("search <destination> [start...]")
+    .description("search for the best route to a destination")
+    .option("-d|--data <file>", "black-hole/exit data")
+    .option("-b|--bases <file>", "bases to use as alternate start locations")
+    .action(async (destination, starts, args: IArgData) => {
+        await errorTrap(async () => await Search.search(coordinates(destination), starts.map(coordinates), args));
+    });
+
 /* check command */
 program.on("command:*", () => {
     console.error(`invalid command: ${program.args.join(" ")}`);
@@ -43,6 +55,7 @@ try {
 
 /* check for no command */
 if (!program.args.length) {
+    console.error("empty arguments");
     program.help();
 }
 
@@ -54,7 +67,7 @@ async function errorTrap(f: () => Promise<void>): Promise<void> {
     try {
         await f();
     } catch (e) {
-        console.log(`ERROR: ${e.message}`);
+        console.log(`ERROR: ${inspect(e)}`);
         process.exit(1);
     }
 }
