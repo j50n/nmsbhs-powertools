@@ -57,3 +57,8 @@ export function parseGalaxy(value: string): Galaxy {
 export interface IArgData {
     data: string | undefined;
 }
+
+export interface IArgBases {
+    bases: string | undefined;
+}
+

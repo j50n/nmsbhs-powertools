@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-import { IArgGalaxy, IArgPlatform, parseGalaxy, IArgData, IArgUsername } from "./options";
+import { IArgGalaxy, IArgPlatform, parseGalaxy, IArgData, IArgBases, IArgUsername } from "./options";
 import * as Downloads from "./downloads";
 import * as Search from "./search";
 import { inspect } from "util";
@@ -36,7 +36,7 @@ program
     .description("search for the best route to a destination")
     .option("-d|--data <file>", "black-hole/exit data")
     .option("-b|--bases <file>", "bases to use as alternate start locations")
-    .action(async (destination, starts, args: IArgData) => {
+    .action(async (destination, starts, args: IArgData & IArgBases) => {
         await errorTrap(async () => await Search.search(coordinates(destination), starts.map(coordinates), args));
     });
 
