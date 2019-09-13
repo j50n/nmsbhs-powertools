@@ -1,4 +1,4 @@
-#! /usr/bin/env node
+#!/usr/bin/env node
 
 import { IArgGalaxy, IArgPlatform, parseGalaxy, IArgData, IArgBases, IArgUsername } from "./options";
 import * as Downloads from "./downloads";
@@ -34,9 +34,11 @@ program
 program
     .command("search <destination> [start...]")
     .description("search for the best route to a destination")
+    .option("-j|--jump-distance <number>", "hyperdrive jump distance", n => parseFloat(n), 2000)
+    .option("-n|--number-to-show <integer>", "number of routes to show", n => Math.max(parseInt(n, 10), 1), 1)
     .option("-d|--data <file>", "black-hole/exit data")
     .option("-b|--bases <file>", "bases to use as alternate start locations")
-    .action(async (destination, starts, args: IArgData & IArgBases) => {
+    .action(async (destination, starts, args: IArgData & IArgBases & { numberToShow: number; jumpDistance: number }) => {
         await errorTrap(async () => await Search.search(coordinates(destination), starts.map(coordinates), args));
     });
 
