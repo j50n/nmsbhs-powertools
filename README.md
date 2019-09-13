@@ -27,20 +27,26 @@ This makes the `bhs` command line tool available.
 
 ### Get Black-Hole/Exit Data
 
-`bhs data --ps4 -g euclid`
+```bash
+bhs data --ps4 -g euclid
+```
 
 ### Get Player Base Data
 
 This isn't working.
 
-`bhs bases --pc -g euclid -u 'Bad Wolf'`
+```bash
+bhs bases --pc -g euclid -u 'Bad Wolf'
+```
 
 ### Search for the Best Route
 
 The first coordinates is the destination. Additional coordinates
 are start locations. You can specify multiple starts.
 
-`bhs search -d <( bhs data --ps4 ) 0164:007E:0596:0021 0DCD:0082:0D18:0010`
+```bash
+bhs search -d <( bhs data --ps4 ) 0164:007E:0596:0021 0DCD:0082:0D18:0010
+```
 
 If you have bases:
 
