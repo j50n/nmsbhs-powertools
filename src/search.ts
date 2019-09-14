@@ -7,6 +7,13 @@ import * as Conv from "./conversions";
 import * as Debug from "./debug";
 import { start } from "repl";
 
+// https://us-central1-nms-bhs.cloudfunctions.net/getBases?u=Powehi&g=Euclid&p=PC-XBox
+// https://us-central1-nms-bhs.cloudfunctions.net/getBasesStart?u=Powehi&g=Euclid&p=PC-XBox&s=0000:1111:2222:3333
+// https://us-central1-nms-bhs.cloudfunctions.net/getDARC?g=Calypso&p=PC-XBox
+// https://us-central1-nms-bhs.cloudfunctions.net/getGPList
+// https://us-central1-nms-bhs.cloudfunctions.net/getPOI?g=Euclid&p=PC-XBox
+// https://us-central1-nms-bhs.cloudfunctions.net/getOrgs?g=Euclid&p=PC-XBox
+
 export async function search(
     destination: Coordinates,
     starts: Coordinates[],

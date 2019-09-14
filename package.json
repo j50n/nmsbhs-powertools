@@ -17,7 +17,7 @@
         "axios": "0.19.0",
         "csv-parse": "~4.4",
         "immutable": "4.0.0-rc.12",
-        "nmsbhs-utils": "git+ssh://git@github.com/j50n/nmsbhs-utils.git#1.0.5"
+        "nmsbhs-utils": "git+ssh://git@github.com/j50n/nmsbhs-utils.git#1"
     },
     "devDependencies": {
         "typescript": "~3.6"
