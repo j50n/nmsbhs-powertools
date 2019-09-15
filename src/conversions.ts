@@ -9,14 +9,18 @@ export async function* convertToBase(bases: AsyncIterableIterator<string>): Asyn
             } catch (e) {
                 if (e instanceof SyntaxError) {
                     throw new SyntaxError(`${e.message} '${line}'`);
+                } else {
+                    throw e;
                 }
             }
             if (!Array.isArray(base)) {
                 throw new TypeError(`data is not an array: ${line}`);
-            } else if (base.length !== 2) {
-                throw new RangeError(`data is the wrong length; got ${base.length}, expected 2`);
-            } else {
+            } else if (base.length === 2) {
                 yield { coords: coordinates(base[0] as string), label: base[1] as string };
+            } else if (base.length === 3) {
+                yield { coords: coordinates(base[0] as string), label: `${base[2]}(${base[1]})` as string };
+            } else {
+                throw new RangeError(`data is the wrong length; got ${base.length}, expected 2 or 3`);
             }
         }
     }

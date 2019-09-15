@@ -3,6 +3,7 @@
 import { IArgGalaxy, IArgPlatform, parseGalaxy, IArgData, IArgBases, IArgUsername } from "./options";
 import * as Downloads from "./downloads";
 import * as Search from "./search";
+import * as Suggest from "./suggest";
 import { inspect } from "util";
 
 import program from "commander";
@@ -22,6 +23,7 @@ program
 
 program
     .command("bases")
+    .description("get bases by username or get all")
     .option("-g|--galaxy <galaxy>", "galaxy name", parseGalaxy, "Euclid")
     .option("-s|--ps4", "platform is PS4")
     .option("-p|--pc", "platform is PC")
@@ -40,6 +42,17 @@ program
     .option("-b|--bases <file>", "bases to use as alternate start locations")
     .action(async (destination, starts, args: IArgData & IArgBases & { numberToShow: number; jumpDistance: number }) => {
         await errorTrap(async () => await Search.search(coordinates(destination), starts.map(coordinates), args));
+    });
+
+    program
+    .command("suggest <start> [destinations...]")
+    .description("search for destinations that are near my start")
+    .option("-j|--jump-distance <number>", "hyperdrive jump distance", n => parseFloat(n), 2000)
+    .option("-n|--number-to-show <integer>", "number of routes to show", n => Math.max(parseInt(n, 10), 1), 5)
+    .option("-d|--data <file>", "black-hole/exit data")
+    .option("-b|--bases <file>", "bases to use as alternate start locations")
+    .action(async (destination, starts, args: IArgData & IArgBases & { numberToShow: number; jumpDistance: number }) => {
+        await errorTrap(async () => await Suggest.suggest(coordinates(destination), starts.map(coordinates), args));
     });
 
 /* check command */
