@@ -27,8 +27,32 @@ This makes the `bhs` command line tool available.
 
 ### Get Black-Hole/Exit Data
 
+The `bhs data` command downloads black-hole/exit pairs from the BlackHoleSuns database by
+platform and galaxy and converts it to CSV format. The default galaxy is "Euclid."
+
 ```bash
-bhs data --ps4 -g euclid
+bhs data --ps4 | head -10
+```
+
+results in
+
+```csv
+bh-coords,bh-region,bh-system,ex-coords,ex-region,ex-system
+0000:0000:0000:0079,Thoslo Quadrant,SAS.A83,02CC:007C:0000:003D,Thnavi Void,Lafaelu-Mysit
+0000:0000:0001:0079,Sea of Yiforcy,Mubskada XV,0000:0081:06D8:0001,Tejobadj Terminus,Ritann-Iovir
+0000:0001:0000:0079,Riszewamya,Carlit-Muhi,0FFE:0080:0EE7:000D,Wiyosh Terminus,Usukuha
+0000:0001:0001:0079,Eograb Quadrant,Yachida-Kip,0FFE:007D:045D:0049,Ladekau Mass,Motsum-Majo
+0000:007B:0266:0079,Urberg Conflux,Aeguror,0FFE:007E:08C6:0036,Igwala Boundary,Baekerin
+0000:007B:0915:0079,The Arm of Agybol,Sredko,0873:0083:0000:002E,Nishma,Miosber
+0000:007C:01E0:0079,Gaithh Terminus,Ordnet,0248:0082:0000:0006,Sea of Nemari,Rycoktas
+0000:007C:01E8:0079,Pahontie,AlyKillo I,0FFE:007E:0A94:0004,Tuylinni Cluster,Jiyuanwe
+0000:007C:0915:0079,Negxian Conflux,Iazusc XIV,02B0:007E:0DFC:0076,Diophu Fringe,Omotsu-Nari
+```
+
+To load the data for PC and Eissentam to a file:
+
+```bash
+bhs data --pc --galaxy eissentam > ./data-pc-eissentam.csv
 ```
 
 ### Get Player Base Data

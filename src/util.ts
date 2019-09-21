@@ -20,3 +20,5 @@ export function minBy<T>(items: T[], f: (item: T) => number): T | null {
 export function sortByNumber<T>(items: T[], f: (item: T) => number): T[] {
     return items.sort((a, b) => f(a) - f(b));
 }
+
+

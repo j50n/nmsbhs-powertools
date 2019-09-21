@@ -66,10 +66,26 @@ export async function* read(r: Readable): AsyncIterableIterator<string> {
     yield* buffersToStrings(convertReadableToBuffers(r));
 }
 
-export async function toArray<T>(items: AsyncIterableIterator<T>): Promise<T[]>{
+/**
+ * Convert an async iterator to an array.
+ * @param items The source iterator.
+ * @returns The array.
+ */
+export async function toArray<T>(items: AsyncIterableIterator<T>): Promise<T[]> {
     const results: T[] = [];
-    for await(const item of items){
+    for await (const item of items) {
         results.push(item);
     }
     return results;
+}
+
+/**
+ * Convert an array to an async iterator.
+ * @param arr The source array.
+ * @returns The iterator.
+ */
+export async function* toIterator<T>(arr: T[]): AsyncIterableIterator<T> {
+    for (const item of arr) {
+        yield item;
+    }
 }
