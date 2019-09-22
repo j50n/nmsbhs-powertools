@@ -3,11 +3,22 @@ import axios from "axios";
 import { toIterator, read } from "./reader";
 import { Readable } from "stream";
 import csv from "fast-csv";
+import { Hop, System, coordinates, isValidHop } from "nmsbhs-utils";
+import { convertToHop } from "./conversions";
 
 // https://us-central1-nms-bhs.cloudfunctions.net/getBases?u=Bad%20Wolf&g=Calypso&p=PC-XBox
 // https://us-central1-nms-bhs.cloudfunctions.net/getDARC?g=Euclid&p=PC-XBox
 // https://us-central1-nms-bhs.cloudfunctions.net/getGPList
 // https://us-central1-nms-bhs.cloudfunctions.net/getPOI
+
+interface IHopRow {
+    "bh-coords": string;
+    "bh-region": string;
+    "bh-system": string;
+    "ex-coords": string;
+    "ex-region": string;
+    "ex-system": string;
+}
 
 export async function data(args: IArgPlatform & IArgGalaxy): Promise<void> {
     const g = encodeURIComponent(args.galaxy);
@@ -25,6 +36,24 @@ export async function data(args: IArgPlatform & IArgGalaxy): Promise<void> {
 
     for await (const line of read(csvLines)) {
         console.log(line);
+    }
+}
+
+/**
+ * Companion function to [data] that reads black-hole/exit data in from CSV and spits
+ * out [Hop] instances.
+ * @param reader The input reader.
+ */
+export async function* readData(reader: Readable): AsyncIterableIterator<Hop> {
+    for await (const hopRow of reader.pipe(csv.parse({ headers: true }))) {
+        const h = hopRow as IHopRow;
+        const hop = new Hop(
+            new System(h["bh-region"], h["bh-system"], coordinates(h["bh-coords"])),
+            new System(h["ex-region"], h["ex-system"], coordinates(h["ex-coords"])),
+        );
+        if (isValidHop(hop)) {
+            yield hop;
+        }
     }
 }
 

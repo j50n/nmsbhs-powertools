@@ -6,6 +6,7 @@ import { Coordinates, dijkstraCalculator, Route } from "nmsbhs-utils";
 import * as Conv from "./conversions";
 import * as Debug from "./debug";
 import { start } from "repl";
+import { readData } from "./downloads";
 
 // https://us-central1-nms-bhs.cloudfunctions.net/getBases?u=Powehi&g=Euclid&p=PC-XBox
 // https://us-central1-nms-bhs.cloudfunctions.net/getBasesStart?u=Powehi&g=Euclid&p=PC-XBox&s=0000:1111:2222:3333
@@ -24,7 +25,7 @@ export async function search(
     }
 
     const hops = await Debug.time("Read Hops", () => {
-        return Reader.toArray(Conv.convertToHop(Reader.read(fs.createReadStream(args.data!))));
+        return Reader.toArray(readData(fs.createReadStream(args.data!)));
     });
 
     console.error(`there are ${hops.length} hops`);
@@ -42,6 +43,10 @@ export async function search(
         const calc = dijkstraCalculator(hops, args.jumpDistance, "time");
         return calc.findRoute(startSystems, destSystem);
     });
+
+    if (args.numberToShow > routes.length) {
+        console.error(`requested ${args.numberToShow} results but there were only ${routes.length} starts; showing ${routes.length}`);
+    }
 
     for (const route of routes.sort((a, b) => a.score + a.route.length / 1000 - (b.score + b.route.length / 1000)).slice(0, args.numberToShow)) {
         console.log(`score: ${route.score}`);
