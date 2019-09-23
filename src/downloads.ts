@@ -3,7 +3,7 @@ import axios from "axios";
 import { toIterator, read } from "./reader";
 import { Readable } from "stream";
 import csv from "fast-csv";
-import { Hop, System, coordinates, isValidHop } from "nmsbhs-utils";
+import { Hop, System, coordinates, isValidHop, ISystem } from "nmsbhs-utils";
 import { convertToHop } from "./conversions";
 
 // https://us-central1-nms-bhs.cloudfunctions.net/getBases?u=Bad%20Wolf&g=Calypso&p=PC-XBox
@@ -18,6 +18,11 @@ interface IHopRow {
     "ex-coords": string;
     "ex-region": string;
     "ex-system": string;
+}
+
+interface IBaseRow {
+    coords: string;
+    name: string;
 }
 
 export async function data(args: IArgPlatform & IArgGalaxy): Promise<void> {
@@ -54,6 +59,16 @@ export async function* readData(reader: Readable): AsyncIterableIterator<Hop> {
         if (isValidHop(hop)) {
             yield hop;
         }
+    }
+}
+
+export async function* readBases(reader: Readable): AsyncIterableIterator<ISystem> {
+    for await (const baseRow of reader.pipe(csv.parse({ headers: true }))) {
+        const b = baseRow as IBaseRow;
+        yield {
+            label: b.name,
+            coords: coordinates(b.coords),
+        };
     }
 }
 

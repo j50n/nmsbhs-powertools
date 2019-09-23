@@ -8,6 +8,11 @@ import { inspect } from "util";
 
 import program from "commander";
 import { coordinates } from "nmsbhs-utils";
+import cs from "color-support";
+import colors from "ansi-colors";
+
+type Support = () => { hasBasic: boolean };
+colors.enabled = (cs as Support)() && (cs as Support)().hasBasic;
 
 program.description("Power-tools for travelers in No Man's Sky.").version("0.0.0");
 
@@ -44,7 +49,7 @@ program
         await errorTrap(async () => await Search.search(coordinates(destination), starts.map(coordinates), args));
     });
 
-    program
+program
     .command("suggest <start> [destinations...]")
     .description("search for destinations that are near my start")
     .option("-j|--jump-distance <number>", "hyperdrive jump distance", n => parseFloat(n), 2000)

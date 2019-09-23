@@ -2,11 +2,12 @@ import { IArgData, IArgBases } from "./options";
 import fs from "fs";
 import * as Reader from "./reader";
 import { inspect } from "util";
-import { Coordinates, dijkstraCalculator, Route } from "nmsbhs-utils";
+import { Coordinates, dijkstraCalculator, Route, ISystem } from "nmsbhs-utils";
 import * as Conv from "./conversions";
 import * as Debug from "./debug";
 import { start } from "repl";
-import { readData } from "./downloads";
+import { readData, readBases } from "./downloads";
+import { blue, cyanBright, green, red, magenta } from "ansi-colors";
 
 // https://us-central1-nms-bhs.cloudfunctions.net/getBases?u=Powehi&g=Euclid&p=PC-XBox
 // https://us-central1-nms-bhs.cloudfunctions.net/getBasesStart?u=Powehi&g=Euclid&p=PC-XBox&s=0000:1111:2222:3333
@@ -28,16 +29,16 @@ export async function search(
         return Reader.toArray(readData(fs.createReadStream(args.data!)));
     });
 
-    console.error(`there are ${hops.length} hops`);
+    console.error(blue(`there are ${hops.length} hops`));
 
-    let startSystems = starts.map((coords, i) => {
+    let startSystems: ISystem[] = starts.map((coords, i) => {
         return { label: `START[${i + 1}]`, coords };
     });
     if (args.bases) {
-        startSystems = startSystems.concat(await Reader.toArray(Conv.convertToBase(Reader.read(fs.createReadStream(args.bases!)))));
+        startSystems = startSystems.concat(await Reader.toArray(readBases(fs.createReadStream(args.bases!))));
     }
 
-    const destSystem = { label: `DEST`, coords: destination };
+    const destSystem: ISystem = { label: `DEST`, coords: destination };
 
     const routes = Debug.timeSync("Dijkstra", () => {
         const calc = dijkstraCalculator(hops, args.jumpDistance, "time");
@@ -50,8 +51,21 @@ export async function search(
 
     for (const route of routes.sort((a, b) => a.score + a.route.length / 1000 - (b.score + b.route.length / 1000)).slice(0, args.numberToShow)) {
         console.log(`score: ${route.score}`);
-        for (const leg of route.route) {
-            console.log(`\t${leg.coords} ${leg.label}`);
+        for (const [legA, legB] of onetwo(route.route)) {
+            const cA = cyanBright(legA.coords.toString());
+            const lA = green(legA.label);
+            const cB = cyanBright(legB.coords.toString());
+            const lB = magenta(legB.label);
+            const d = blue(Math.floor(400 * legA.coords.dist2(legB.coords)).toLocaleString());
+            console.log(`\t${cA} ${lA} ${blue("🠞")} ${cB} ${lB} ${d} ${blue("LY")}`);
         }
     }
+}
+
+function onetwo<T>(its: T[]): [T, T][] {
+    const result: [T, T][] = [];
+    for (let i = 0; i < its.length / 2; i++) {
+        result.push([its[i * 2], its[i * 2 + 1]]);
+    }
+    return result;
 }

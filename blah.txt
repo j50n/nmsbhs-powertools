@@ -1,0 +1,23 @@
+score: 0
+	0164:007E:0596:0021 Hermit's Home with Diplos
+	0164:007E:0596:0021 DEST
+score: 2
+	0163:007E:0595:01DE Hermit's Lost Diplos
+	0164:007E:0596:0021 DEST
+score: 2
+	0165:007E:0595:010F Explorers!
+	0164:007E:0596:0021 DEST
+score: 38
+	042F:0078:0D55:003C Hermit's Haulers at the Hub
+	042F:0075:0D55:0079 [Sea of Intiuhe] Ochegu‑Evar
+	01DD:007F:05D6:0027 [Hiinca Nebula] Mutash‑Nese
+	0164:007E:0596:0021 DEST
+score: 38
+	0B39:007C:01FD:0079 Gek Shrine
+	0B39:007C:01FD:0079 [Sayardhib] Miuragiu
+	0168:007D:067F:0057 [Sea of Shkovs] Uoyante XVIII
+	014C:0081:0678:0079 [Muboyleo Shallows] Uihuangn X
+	0C25:007D:0297:0035 [Zakati Adjunct] Libeinina
+	0C2A:0082:0270:0079 [yikoninh expanse] mopainan
+	0187:0080:0581:0042 [rysuviit quadrant] Dachid‑shi
+	0164:007E:0596:0021 DEST
